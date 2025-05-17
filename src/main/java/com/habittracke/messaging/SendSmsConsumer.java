@@ -16,11 +16,11 @@ public class SendSmsConsumer {
     private static final Logger log = LoggerFactory.getLogger(SendSmsConsumer.class);
     private final SendSmsRepository sendSmsRepository;
     @KafkaListener(topics = "send-sms-topic", groupId = "send-sms-group")
-    public void consumeMessage(String data) {
+    public void consumeMessage(SendSms message) {
         System.out.println("SMS MESSAGE: xxx");
         try {
             ObjectMapper mapper = new ObjectMapper();
-            SendSms message = mapper.readValue(data, SendSms.class);
+//            SendSms message = mapper.readValue(data, SendSms.class);
             // Gọi hàm gửi tin nhắn
             try {
                 System.out.println("t da gui tin nhan cho sdt: "+ message.getPhone() +", "+message.getContent());

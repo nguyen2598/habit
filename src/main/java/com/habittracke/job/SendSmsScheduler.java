@@ -18,9 +18,9 @@ public class SendSmsScheduler {
 
     private final SendSmsRepository sendSmsRepository;
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, SendSms> kafkaTemplate;
 
-    public SendSmsScheduler(SendSmsRepository sendSmsRepository, KafkaTemplate<String, String> kafkaTemplate) {
+    public SendSmsScheduler(SendSmsRepository sendSmsRepository, KafkaTemplate<String, SendSms> kafkaTemplate) {
         this.sendSmsRepository = sendSmsRepository;
         this.kafkaTemplate = kafkaTemplate;
     }
@@ -41,7 +41,7 @@ public class SendSmsScheduler {
                 ObjectMapper mapper = new ObjectMapper();
                 String json = mapper.writeValueAsString(msg);
 
-                kafkaTemplate.send("send-sms-topic", json); // Đẩy vào Kafka
+                kafkaTemplate.send("send-sms-topic", msg); // Đẩy vào Kafka
                 System.out.println("send thanh cong");
             } catch (Exception e) {
                 System.out.println("send that bai1: "+ e.getMessage());
