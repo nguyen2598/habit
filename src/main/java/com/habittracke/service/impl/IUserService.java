@@ -10,6 +10,7 @@ import com.habittracke.mapper.UserMapper;
 import com.habittracke.repository.UserRepository;
 import com.habittracke.service.UserService;
 import com.habittracke.utils.JwtToken;
+import com.habittracke.utils.Translator;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,17 +37,17 @@ public class IUserService implements UserService {
     public AccountResponse register(UserCreate request) {
 
         if (request.getEmail().isEmpty()) {
-            throw new UserException("[REGIS000002] email is empty");
+            throw new UserException("[REGIS000001] email is empty");
         }
         if (request.getPassword().isEmpty()) {
             throw new UserException("[REGIS000002] password is empty");
         }
         if (request.getUsername().isEmpty()) {
-            throw new UserException("[REGIS000002] username is empty");
+            throw new UserException("[REGIS000003] username is empty");
         }
         Optional<User> userData = userRepository.findByUsernameOrEmail(request.getUsername(), request.getEmail());
         if (userData.isPresent()) {
-            throw new UserException("[REGIS000002] username already exist");
+            throw new UserException("[REGIS000004]" + Translator.toLocaleVi("user.unique"));
         }
         try {
             User user = User.builder()
